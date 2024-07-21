@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<head>
+    <title>Translate to Aksara Jawa</title>
+    <style>
+        body {
+            font-family: 'Noto Serif', serif;
+            background-color: #fcfcfc;
+            color: #463f03;
+            text-align: center;
+            padding: 20px;
+        }
+        h1, h2 {
+            font-family: 'Noto Serif', serif;
+            margin-bottom: 20px;
+        }
+        #translate-form {
+            background-color: #3a01017c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 100px rgba(58, 53, 5, 0.521);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        #input-text {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid  #463f03;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color:  #302b01;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #8b7f10;
+        }
+        #result {
+            font-size: 30px;
+            background-color: #ffffff;
+            padding: 30px;
+            border: 1px solid  #463f03;
+            border-radius: 5px;
+            display: inline-block;
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Translate to Aksara Jawa</h1>
+    <form id="translate-form">
+        <textarea id="input-text" placeholder="Masukkan teks di sini..."></textarea>
+        <button type="submit">Translate</button>
+    </form>
+    <h2>Hasil:</h2>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('translate-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const text = document.getElementById('input-text').value;
+            fetch('/translate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: text }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = data.translated_text;
+            });
+        });
+    </script>
+</body>
+</html>
+
+{% endblock %}
